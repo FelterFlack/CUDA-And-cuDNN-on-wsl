@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "node-pty": "^1.0.0",
+    "os": "^0.1.2",
+    "ws": "^8.17.0"
+  },
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run web\"",
+    "server": "node ./backend.js",
+    "web": "http-server ./"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "http-server": "^14.1.1"
+  }
+}

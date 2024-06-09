@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@4.19.0/css/xterm.css" />
+  <script src="https://cdn.jsdelivr.net/npm/xterm@4.19.0/lib/xterm.js"></script>
+
+  <link rel="stylesheet" href="./style.css">
+  <style>
+    #terminal {
+      width: 100%;
+      height: 50%;
+      font-size: medium;
+      box-sizing: border-box; /* Padding ve border dahil edilir */
+    }
+
+    .section-dropdown {
+      display: none;
+    }
+
+    .dropdown:checked + .for-dropdown + .section-dropdown {
+      display: block;
+    }
+
+    .section-dropdown-sub {
+      display: none;
+    }
+
+    .dropdown-sub:checked + .for-dropdown-sub + .section-dropdown-sub {
+      display: block;
+    }
+    p{
+      background-color: rgb(29, 29, 29) !important;
+      border-radius: 5%;
+      padding: 15px;
+    }
+    *{
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="terminal"></div>
+  <input class="dark-light" type="checkbox" id="dark-light" name="dark-light"/>
+  <label for="dark-light"></label>
+
+  <div class="light-back"></div> 
+
+  <div style="display: flex; flex-direction: row; width: 100%; justify-content: space-around">
+    <div>
+      <div style="position: relative; max-width: 100%; z-index: 200;">   
+        <input class="dropdown" type="checkbox" id="dropdown3" name="dropdown"/>
+        <label class="for-dropdown" for="dropdown3">WSL <i class="uil uil-arrow-down"></i></label>
+        <div class="section-dropdown" style="position: relative;"> 
+          <p data-tooltip="wsl --install --no-distribution">WSL Kurulum<i class="uil uil-arrow-right"></i></p>
+          <p data-tooltip="wsl --set-version 2">WSL Versiyon 2<i class="uil uil-arrow-right"></i></p>
+          <p data-tooltip="wsl --install <DistroName>">WSL Distro Kurulum<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="wsl -l">WSL Listele<i class="uil uil-arrow-right"></i></p>
+              <p data-tooltip="wsl">WSL Giriş<i class="uil uil-arrow-right"></i></p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="position: relative; max-width: 100%; z-index: 200;">   
+        <input class="dropdown" type="checkbox" id="dropdown1" name="dropdown"/>
+        <label class="for-dropdown" for="dropdown1">Native <i class="uil uil-arrow-down"></i></label>
+        <div class="section-dropdown" style="position: relative;"> 
+
+          <input class="dropdown-sub" type="checkbox" id="dropdown-sub1" name="dropdown-sub1"/>
+          <label class="for-dropdown-sub" for="dropdown-sub1">Anaconda<i class="uil uil-plus"></i></label>
+          <div class="section-dropdown-sub"> 
+            <p data-tooltip="curl -O https://repo.anaconda.com/archive/Anaconda3-2024.02-1-Linux-x86_64.sh">Download Anaconda<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="bash Anaconda3-2024.02-1-Linux-x86_64.sh">Anaconda Yükle<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="conda config --set auto_activate_base False">Conda Base Kapat<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="conda create -n <ENV> python=<p>">Anaconda Env With Python <i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="conda activate <ENV>">Anaconda Env Aktif Etme<i class="uil uil-arrow-right"></i></p>
+          </div>
+
+          <input class="dropdown-sub" type="checkbox" id="dropdown-sub2" name="dropdown-sub2"/>
+          <label class="for-dropdown-sub" for="dropdown-sub2">CUDA<i class="uil uil-plus"></i></label>
+          <div class="section-dropdown-sub"> 
+            <p data-tooltip="wget https://developer.download.nvidia.com/compute/cuda/repos/wsl-ubuntu/x86_64/cuda-wsl-ubuntu.pin">Download CUDA Pin<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="sudo mv cuda-wsl-ubuntu.pin /etc/apt/preferences.d/cuda-repository-pin-600">Load CUDA Pin <i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="wget https://developer.download.nvidia.com/compute/cuda/12.3.2/local_installers/cuda-repo-wsl-ubuntu-12-3-local_12.3.2-1_amd64.deb">Download CUDA<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="sudo dpkg -i cuda-repo-wsl-ubuntu-12-3-local_12.3.2-1_amd64.deb">Install CUDA <i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="sudo cp /var/cuda-repo-wsl-ubuntu-12-3-local/cuda-*-keyring.gpg /usr/share/keyrings/">Load CUDA Keyring <i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="sudo apt-get update">Update<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="sudo apt-get -y install cuda-toolkit-12-3">Install CUDA Toolkit <i class="uil uil-arrow-right"></i></p>
+          </div>
+
+          <input class="dropdown-sub" type="checkbox" id="dropdown-sub3" name="dropdown-sub3"/>
+          <label class="for-dropdown-sub" for="dropdown-sub3">cuDNN<i class="uil uil-plus"></i></label>
+          <div class="section-dropdown-sub"> 
+            <p data-tooltip="sudo dpkg -i cudnn-local-repo-ubuntu2204-8.9.7.29_1.0-1_amd64.deb">Install cuDNN <i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="sudo cp /var/cudnn-local-repo-*/cudnn-local-*-keyring.gpg /usr/share/keyrings/">Load cuDNN Keyring <i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="sudo apt-get update">Update<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="sudo apt-get install libcudnn8=8.9.7.29-1+cuda12.2">Install libcudnn8<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="sudo apt-get install libcudnn8-dev=8.9.7.29-1+cuda12.2">Install libcudnn8-dev<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="sudo apt-get install libcudnn8-samples=8.9.7.29-1+cuda12.2">Install libcudnn8-samples<i class="uil uil-arrow-right"></i></p>
+          </div>
+
+          <input class="dropdown-sub" type="checkbox" id="dropdown-sub4" name="dropdown-sub4"/>
+          <label class="for-dropdown-sub" for="dropdown-sub4">Test<i class="uil uil-plus"></i></label>
+          <div class="section-dropdown-sub"> 
+            <p data-tooltip="sudo reboot">Reboot<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="pip install --upgrade pip">Upgrade pip<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="python3 -m pip install tensorflow[and-cuda]">Install TensorFlow with CUDA<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="pip install --ignore-installed --upgrade tensorflow==2.16.1">Upgrade TensorFlow<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="python3 -c 'import tensorflow as tf; print(tf.config.list_physical_devices(&quot;GPU&quot;))'">Verify TensorFlow Installation<i class="uil uil-arrow-right"></i></p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="position: relative; max-width: 100%; z-index: 200;">   
+        <input class="dropdown" type="checkbox" id="dropdown2" name="dropdown"/>
+        <label class="for-dropdown" for="dropdown2">Docker <i class="uil uil-arrow-down"></i></label>
+        <div class="section-dropdown">
+
+          <input class="dropdown-sub" type="checkbox" id="dropdown-sub9" name="dropdown-sub9"/>
+          <label class="for-dropdown-sub" for="dropdown-sub9">Docker İndir<i class="uil uil-plus"></i></label>
+          <div class="section-dropdown-sub"> 
+            <p data-tooltip="curl -fsSL https://get.docker.com -o get-docker.sh">Docker İndir <i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="sudo groupadd docker">Create Docker Group <i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="sudo usermod -aG docker $USER">Add User to Docker Group <i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="bash get-docker.sh">Run Docker Script <i class="uil uil-arrow-right"></i></p>
+          </div>
+
+
+          <input class="dropdown-sub" type="checkbox" id="dropdown-sub5" name="dropdown-sub5"/>
+          <label class="for-dropdown-sub" for="dropdown-sub5">libnvidia-container İndir<i class="uil uil-plus"></i></label>
+          <div class="section-dropdown-sub"> 
+            <p data-tooltip="curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg">Download NVIDIA GPG Key<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list">Download NVIDIA Container Toolkit List<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="sudo apt-get update">Update<i class="uil uil-arrow-right"></i></p>
+          </div>
+
+          <input class="dropdown-sub" type="checkbox" id="dropdown-sub6" name="dropdown-sub6"/>
+          <label class="for-dropdown-sub" for="dropdown-sub6">nvidia-container-toolkit İndir<i class="uil uil-plus"></i></label>
+          <div class="section-dropdown-sub"> 
+            <p data-tooltip="sudo apt-get install -y nvidia-container-toolkit">Install NVIDIA Container Toolkit<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="sudo nvidia-ctk runtime configure --runtime=docker">Configure Docker Runtime<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="sudo systemctl restart docker">Restart Docker<i class="uil uil-arrow-right"></i></p>
+          </div>
+
+          <input class="dropdown-sub" type="checkbox" id="dropdown-sub7" name="dropdown-sub7"/>
+          <label class="for-dropdown-sub" for="dropdown-sub7">Docker Container Image İndir<i class="uil uil-plus"></i></label>
+          <div class="section-dropdown-sub"> 
+            <p data-tooltip="docker run --gpus all -it tensorflow/tensorflow:latest-gpu bash">Run TensorFlow Docker Container<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="docker run --gpus all -it -v $PWD:/Workspace -w /Workspace tensorflow/tensorflow:latest-gpu bash">Run TensorFlow Docker Container with Workspace<i class="uil uil-arrow-right"></i></p>
+          </div>
+
+          <input class="dropdown-sub" type="checkbox" id="dropdown-sub8" name="dropdown-sub8"/>
+          <label class="for-dropdown-sub" for="dropdown-sub8">START<i class="uil uil-plus"></i></label>
+          <div class="section-dropdown-sub"> 
+            <p data-tooltip="pip install --upgrade pip">Upgrade pip<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="python3 -m pip install tensorflow[and-cuda]">Install TensorFlow with CUDA<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="pip install --ignore-installed --upgrade tensorflow==2.16">Upgrade TensorFlow<i class="uil uil-arrow-right"></i></p>
+            <p data-tooltip="python3 -c 'import tensorflow as tf; print(tf.config.list_physical_devices(&quot;GPU&quot;))'">Verify TensorFlow Installation<i class="uil uil-arrow-right"></i></p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="frontend.js"></script>
+</html>

@@ -1,0 +1,104 @@
+const socket = new WebSocket("ws://localhost:6060");
+
+var term = new window.Terminal({
+    cursorBlink: true
+});
+term.open(document.getElementById('terminal'));
+
+function fitTerminal() {
+    const terminalContainer = document.getElementById('terminal');
+    const cols = Math.floor(terminalContainer.clientWidth / term._core._renderService.dimensions.actualCellWidth);
+    const rows = Math.floor(terminalContainer.clientHeight / term._core._renderService.dimensions.actualCellHeight);
+    term.resize(cols, rows);
+}
+
+function init() {
+    if (term._initialized) {
+        return;
+    }
+
+    term._initialized = true;
+
+    term.prompt2 = () => {
+        term.write('\r\n$ ');
+    };
+    term.prompt2(); // Corrected the function call
+
+    term.onKey(key => {
+        runCommand(term, key.key);
+    });
+    var ENVname
+    var Version
+    var DistroName
+    window.onclick = e => {
+        const target = e.target; // Corrected the syntax error
+        if (target.tagName === 'P') {
+            let command = target.getAttribute('data-tooltip');
+            if (command) {
+                if (command.includes('<DistroName>')) {
+                    if (DistroName) {
+                        command = command.replace('<DistroName>', DistroName);
+                    }else{
+                        DistroName = prompt("Distro ismini Giriniz", "Ubuntu");
+                    }
+                    if (DistroName) {
+                        command = command.replace('<DistroName>', path);
+                    } else {
+                        return; // If no path is provided, do nothing
+                    }
+                }
+                if (command.includes('wsl --install --no-distribution')) {
+                    alert("İşlemden Sonra Lütfen Bilgisayarınızı Yeniden Başlatın"); 
+                }
+                if (command.includes('<ENV>')) {
+                    if (ENVname) {
+                        command = command.replace('<ENV>', ENVname);
+                    }else{
+                        ENVname = prompt("ENV ismini Giriniz", "myenv");
+                    }
+                    if (ENVname) {
+                        command = command.replace('<ENV>', ENVname);
+                    } else {
+                        return; // If no ENVname is provided, do nothing
+                    }
+                }
+
+                if (command.includes('<VERSION>')) {
+                    if (Version) {
+                        command = command.replace('<VERSION>', Version);
+                    }else{
+                        Version = prompt("Python Versiyonu Giriniz 	3.9 3.10 3.11 3.12 Arasından!", "3.12");
+                    }
+                    if (Version) {
+                        command = command.replace('<VERSION>', Version);
+                    } else {
+                        return; // If no Version is provided, do nothing
+                    }
+                }
+                runCommand(term, command);
+                runCommand(term, '\r\n'); // Ensure the command runs
+            } else {
+                console.log("no data-tooltip attribute found");
+            }
+        }
+    }
+
+    setTimeout(() => {
+        runCommand(term, 'clear');
+        runCommand(term, '\r\n');
+    }, 1000);
+
+    // Pencere yeniden boyutlandırıldığında terminali yeniden boyutlandır
+    window.addEventListener('resize', fitTerminal);
+    fitTerminal(); // İlk yüklemede terminali uygun boyuta getir
+}
+
+socket.onmessage = (event) => {
+    term.write(event.data);
+}
+
+function runCommand(term, command) {
+    socket.send(command);
+}
+
+init();
