@@ -39,12 +39,9 @@
   </style>
 </head>
 <body>
+  <div style="position: absolute; width: 1fr; z-index: 200; top:5%; right: 5%; border-radius: 10px; background-color: rgb(41, 41, 41); padding: 15px">Sağ Tıklayarak Kodları Kopyalayabilirsiniz</div>
+  <div id="Notification" style="position: absolute; width: 1fr; z-index: 200; top:5%; left: 5%; border-radius: 10px; background-color: rgb(41, 41, 41); margin: 15px"></div>
   <div id="terminal"></div>
-  <input class="dark-light" type="checkbox" id="dark-light" name="dark-light"/>
-  <label for="dark-light"></label>
-
-  <div class="light-back"></div> 
-
   <div style="display: flex; flex-direction: row; width: 100%; justify-content: space-around">
     <div>
       <div style="position: relative; max-width: 100%; z-index: 200;">   
@@ -151,7 +148,7 @@
           </div>
 
           <input class="dropdown-sub" type="checkbox" id="dropdown-sub8" name="dropdown-sub8"/>
-          <label class="for-dropdown-sub" for="dropdown-sub8">START<i class="uil uil-plus"></i></label>
+          <label class="for-dropdown-sub" for="dropdown-sub8">Test<i class="uil uil-plus"></i></label>
           <div class="section-dropdown-sub"> 
             <p data-tooltip="pip install --upgrade pip">Upgrade pip<i class="uil uil-arrow-right"></i></p>
             <p data-tooltip="python3 -m pip install tensorflow[and-cuda]">Install TensorFlow with CUDA<i class="uil uil-arrow-right"></i></p>
